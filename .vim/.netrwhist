@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/tomoya/iOSdev/shufti_mobile_app2'
+let g:netrw_dirhist_2='/Users/tomoya/iOSdev/shufti_mobile_app'
+let g:netrw_dirhist_3='/Users/tomoya/iOSdev/shufti_mobile_app2'
+let g:netrw_dirhist_4='/Users/tomoya/iOSdev/shufti_mobile_app2/app'
