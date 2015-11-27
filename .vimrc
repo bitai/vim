@@ -24,11 +24,6 @@ function! s:LoadBundles()
 	NeoBundle 'mattn/emmet-vim'
 	NeoBundle 'nanotech/jellybeans.vim'
 	NeoBundle 'scrooloose/syntastic'
-	NeoBundle "Shougo/unite.vim"
-	NeoBundle "git://github.com/Shougo/vimproc" 
-	NeoBundle "Shougo/neomru"
-	NeoBundle "Shougo/unite-outline"
-	NeoBundle 'derekwyatt/vim-scala'
 	call neobundle#end()
 	colorscheme jellybeans
 
