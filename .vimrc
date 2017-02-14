@@ -10,50 +10,69 @@ endfunction
 
 " NeoBundle よるプラグインのロードと各プラグインの初期化
 function! s:LoadBundles()
-	" 読み込むプラグインの指定
+    " 読み込むプラグインの指定
 
-	call neobundle#begin(expand('~/.vim/bundle/'))
-	NeoBundle 'Shougo/neobundle.vim'
-	NeoBundle 'tpope/vim-surround'
-	NeoBundle 'scrooloose/nerdtree' 
-	" NeoBundle 'davidhalter/jedi-vim'
-	NeoBundle "neocomplete.vim"
-	NeoBundle 'Shougo/neosnippet'
-	NeoBundle 'Shougo/neosnippet-snippets'
-	NeoBundle 'Shougo/neocomplcache'
-	NeoBundle 'mattn/emmet-vim'
+    call neobundle#begin(expand('~/.vim/bundle/'))
+    NeoBundle 'Shougo/neobundle.vim'
+    NeoBundle 'tpope/vim-surround'
+    NeoBundle 'scrooloose/nerdtree' 
+    " NeoBundle 'davidhalter/jedi-vim'
+    NeoBundle "neocomplete.vim"
+    NeoBundle 'Shougo/neosnippet'
+    NeoBundle 'Shougo/neosnippet-snippets'
+    NeoBundle 'Shougo/neocomplcache'
+    NeoBundle 'mattn/emmet-vim'
 	NeoBundle 'nanotech/jellybeans.vim'
 	NeoBundle 'scrooloose/syntastic'
+    NeoBundle 'ctrlpvim/ctrlp.vim'
+    NeoBundle 'slim-template/vim-slim'
+    NeoBundle 'vobornik/vim-mql4.git'
+    NeoBundle 'scrooloose/syntastic'
+    NeoBundle 'kchmck/vim-coffee-script'
+    
+    ""for ruby
+    NeoBundle 'alpaca-tc/alpaca_tags'
+    NeoBundle 'tpope/vim-rails', { 'autoload' : {
+      \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
+    NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
+      \ 'autoload' : {
+      \   'insert' : 1,
+      \ }}
+    
 	call neobundle#end()
-	colorscheme jellybeans
-
-" ...
+  syntax enable
+  " ...
   " 読み込んだプラグインの設定
   " ... 
-"-------キー設定-------
-"  set encoding=utf-8 
+  "-------キー設定-------
+  colorscheme jellybeans
   set fileencodings=utf-8,ucs2le,ucs-2,cp932,euc-jp
   set showmatch
   set expandtab "
   set expandtab "タブ入力を複数の空白入力に置き換える
   set tabstop=2 "画面上でタブ文字が占める幅
-  set shiftwidth=4 "自動インデントでずれる幅
-  set softtabstop=4 "連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
+  set shiftwidth=2 "自動インデントでずれる幅
+  set softtabstop=2 "連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
   set autoindent "改行時に前の行のインデントを継続する
   set smartindent "改行時に入力された行の末尾に合わせて次の行のインデントを増減する
   set ruler
   set backspace=indent,eol,start
   set virtualedit+=block
   set nowrapscan
+  set runtimepath+=expand('~/.vim/vim-mql4')
   " ビジュアルモードでのヤンク後にカーソルを選択前の位置に戻さない
   vnoremap y y`>
   nnoremap <silent><C-e> :NERDTree<CR>
+  inoremap <silent> jj <ESC>
+  autocmd QuickFixCmdPost *grep* cwindow
+  ""autocmd QuickfixCmdPost grep copen
+  
+  nnoremap <silent> <Space>cr :CtrlPMRUFiles<CR>
 
   set statusline=%<[%n]%F%=\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}\ %l,%c\ %P 
-  
    " Disable AutoComplPop.
   set backspace=indent,eol,start
-  set et ts=4 sts=4 sw=4 fenc=utf-8 ff=unix
+  set fenc=utf-8 ff=unix
   let g:acp_enableAtStartup = 0
   " Use neocomplcache.
   let g:neocomplcache_enable_at_startup = 1
@@ -63,48 +82,31 @@ function! s:LoadBundles()
   let g:neocomplcache_min_syntax_length = 3
   let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
-
   let g:syntastic_enable_signs=1
   let g:syntastic_auto_loc_list=1
-  let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['php', 'ruby'], 'passive_filetypes': [] }
-  let g:syntastic_php_checkers=['php', 'ruby']
+  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['php'], 'passive_filetypes': [] }
+  ""let g:syntastic_mode_map = { 'mode': 'passive',
+  ""          \ 'active_filetypes': ['ruby'] }
+  ""let g:syntastic_ruby_checkers = ['rubocop']
+  let g:syntastic_php_checkers=['php']
   let g:syntastic_quite_warnings=0
-
-  ""uniteの設定
-  " insert modeで開始
-  let g:unite_enable_start_insert = 1
-
-  " 大文字小文字を区別しない
-  let g:unite_enable_ignore_case = 1
-  let g:unite_enable_smart_case = 1
-  " grep検索
-  nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-  " カーソル位置の単語をgrep検索
-  nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
-  " grep検索結果の再呼出
-  nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
-  nnoremap <silent> ,o : <C-u>Unite -vertical -winwidth=30 outline<CR>
-  "unite-oulineの設定
-  " バッファ一覧
-  nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
-  " ファイル一覧
-  nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-  " レジスタ一覧
-  nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
-  " 最近使用したファイル一覧
-  nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-
-  " unite grep に ag(The Silver Searcher) を使う
-  if executable('ag')
-      let g:unite_source_grep_command = 'ag'
-      let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-      let g:unite_source_grep_recursive_opt = ''
-  endif
 
   "矢印キーでは表示行単位で行移動する
   set ruler
   set number
-  
+
+  "CoffeeScript
+  au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+  " インデント設定
+  autocmd FileType coffee    setlocal sw=2 sts=2 ts=2 et
+  " オートコンパイル
+  "保存と同時にコンパイルする
+  ""autocmd BufWritePost *.coffee silent make! 
+  "エラーがあったら別ウィンドウで表示
+  ""autocmd QuickFixCmdPost * nested cwindow | redraw! 
+  " Ctrl-cで右ウィンドウにコンパイル結果を一時表示する
+  ""nnoremap <silent> <C-C> :CoffeeCompile vert <CR><C-w>h
+
   " ファイル全般に設定
   augroup General
     autocmd!
@@ -112,12 +114,39 @@ function! s:LoadBundles()
     autocmd BufWinLeave * silent mkview
     autocmd BufWinEnter * silent loadview
   augroup END
+  
+  "endwise"
+  let g:endwise_no_mappings=1
 
-  " 挿入モードでのカーソル移動
-  inoremap <C-j> <Down>
-  inoremap <C-k> <Up>
-  inoremap <C-h> <Left>
-  inoremap <C-l> <Right>
+  "rails"
+  let g:rails_default_file='config/database.yml'
+  let g:rails_level = 4
+  let g:rails_mappings=1
+  let g:rails_modelines=0
+  " let g:rails_some_option = 1
+  " let g:rails_statusline = 1
+  " let g:rails_subversion=0
+  " let g:rails_syntax = 1
+  " let g:rails_url='http://localhost:3000'
+  " let g:rails_ctags_arguments='--languages=-javascript'
+  " let g:rails_ctags_arguments = ''
+  function! SetUpRailsSetting()
+      nnoremap <buffer><Space>r :R<CR>
+      nnoremap <buffer><Space>a :A<CR>
+      nnoremap <buffer><Space>m :Rmodel<Space>
+      nnoremap <buffer><Space>c :Rcontroller<Space>
+      nnoremap <buffer><Space>v :Rview<Space>
+      nnoremap <buffer><Space>p :Rpreview<CR>
+  endfunction
+
+  aug MyAutoCmd
+      au User Rails call SetUpRailsSetting()
+  aug END
+
+  aug RailsDictSetting
+      au!
+  aug END
+  
 
   " Enable heavy features.
   " Use camel case completion.
@@ -158,7 +187,7 @@ function! s:LoadBundles()
   inoremap <expr><C-y>  neocomplcache#close_popup()
   inoremap <expr><C-e>  neocomplcache#cancel_popup()
   " Close popup by <Space>.
-  "inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
+  "inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : \<Space>"
 
  " let g:neocomplcache_enable_camel_case_completion = 1
  " let g:neocomplcache_enable_underbar_completion = 1
