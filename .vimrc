@@ -29,6 +29,7 @@ function! s:LoadBundles()
     NeoBundle 'vobornik/vim-mql4.git'
     NeoBundle 'scrooloose/syntastic'
     NeoBundle 'kchmck/vim-coffee-script'
+    NeoBundle 'szw/vim-tags'
     
     ""for ruby
     NeoBundle 'alpaca-tc/alpaca_tags'
@@ -62,13 +63,14 @@ function! s:LoadBundles()
   set runtimepath+=expand('~/.vim/vim-mql4')
   " ビジュアルモードでのヤンク後にカーソルを選択前の位置に戻さない
   vnoremap y y`>
+  nnoremap <C-]> g<C-]>
   nnoremap <silent><C-e> :NERDTree<CR>
   inoremap <silent> jj <ESC>
   autocmd QuickFixCmdPost *grep* cwindow
   ""autocmd QuickfixCmdPost grep copen
   
   nnoremap <silent> <Space>cr :CtrlPMRUFiles<CR>
-
+  
   set statusline=%<[%n]%F%=\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}\ %l,%c\ %P 
    " Disable AutoComplPop.
   set backspace=indent,eol,start
@@ -94,6 +96,17 @@ function! s:LoadBundles()
   "矢印キーでは表示行単位で行移動する
   set ruler
   set number
+  
+  let g:vim_tags_project_tags_command = '/usr/local/bin/ctags --langmap=RUBY:.rb --exclude="*.js"  --exclude=".git*" -R . 2>/dev/null'
+  let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R -f Gemfile.lock.tags `bundle show --paths` 2>/dev/null"
+  let g:vim_tags_auto_generate = 1
+  set tags+=tags,Gemfile.lock.tags
+
+  "ctrlp setting
+  let g:ctrlp_max_files  = 200000
+  let g:ctrlp_max_depth = 10
+  let g:ctrlp_clear_cache_on_exit = 0
+  let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:50'
 
   "CoffeeScript
   au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
